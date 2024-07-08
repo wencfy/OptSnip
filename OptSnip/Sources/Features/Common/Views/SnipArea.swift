@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct SnipArea: View {
+    @StateObject var area = SnipAreaViewModel(
+        offset: CGPoint(x: 100, y: 100),
+        size: CGSize(width: 100, height: 100)
+    )
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            SnipContent(area: area)
+            SnipCorners(area: area)
+        }
     }
-}
-
-#Preview {
-    SnipArea()
 }
