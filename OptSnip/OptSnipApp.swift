@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct OptSnipApp: App {
+    @NSApplicationDelegateAdaptor var AppDelegate: AppDelegate
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra("Utility App", systemImage: "hammer") {
+            
         }
     }
 }

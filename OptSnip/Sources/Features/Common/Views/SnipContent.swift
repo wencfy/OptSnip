@@ -12,11 +12,15 @@ struct SnipContent: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
-            .stroke(Color.accentColor)
-            .fill(Color.accentColor)
+            .fill(Color.white)
+            .onHover { inside in
+                if inside {
+                    NSCursor.crosshair.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
             .position(area.offset + area.dragOffset)
-            .frame(width: area.size.width, height: area.size.height, alignment: .center)
-            .opacity(0.1)
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
@@ -25,7 +29,9 @@ struct SnipContent: View {
                     .onEnded { value in
                         area.dragOffset = .zero
                         area.offset = area.offset + value.translation
+                        area.isDragging = false
                     }
             )
+            .frame(width: abs(area.size.width), height: abs(area.size.height))
     }
 }

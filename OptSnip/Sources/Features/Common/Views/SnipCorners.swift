@@ -9,65 +9,92 @@ import SwiftUI
 
 struct SnipCorners: View {
     @StateObject var area: SnipAreaViewModel
-    private let cornerRadius = 8.0
+    private let cornerRadius = 6.0
     private let cornerLength = 0.0
     
     var body: some View {
         let len = cornerRadius + cornerLength
+        let weight = 1.0
         
-        VStack {
-            HStack {
-                createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .topLeft)
-                    .stroke(Color.accentColor, lineWidth: 2)
-                    .frame(width: len, height: len)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { value in
-                                area.dragCorner(translation: value.translation, corner: .topLeft)
-                            }
-                    )
-                
-                Spacer()
-                
-                createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .topRight)
-                    .stroke(Color.accentColor, lineWidth: 2)
-                    .frame(width: len, height: len)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { value in
-                                area.dragCorner(translation: value.translation, corner: .topRight)
-                            }
-                    )
+        createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .topLeft)
+            .stroke(Color.accentColor, lineWidth: weight)
+            .onHover { hovering in
+                if hovering {
+                    NSCursor(
+                        image: NSImage(named: "resizenorthwest")!,
+                        hotSpot: NSPoint(x: 16, y: 16)).push()
+                } else {
+                    NSCursor.pop()
+                }
             }
-            
-            Spacer()
-            
-            HStack {
-                createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .bottomLeft)
-                    .stroke(Color.accentColor, lineWidth: 2)
-                    .frame(width: len, height: len)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { value in
-                                area.dragCorner(translation: value.translation, corner: .bottomLeft)
-                            }
-                    )
-                
-                Spacer()
-                
-                createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .bottomRight)
-                    .stroke(Color.accentColor, lineWidth: 2)
-                    .frame(width: len, height: len)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { value in
-                                area.dragCorner(translation: value.translation, corner: .bottomRight)
-                            }
-                    )
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        area.dragCorner(translation: value.translation, corner: .topLeft)
+                    }
+            )
+            .position(area.cornerPos(corner: .topLeft))
+            .frame(width: len, height: len)
+        
+        createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .topRight)
+            .stroke(Color.accentColor, lineWidth: weight)
+            .onHover { hovering in
+                if hovering {
+                    NSCursor(
+                        image: NSImage(named: "resizenortheast")!,
+                        hotSpot: NSPoint(x: 16, y: 16)).push()
+                } else {
+                    NSCursor.pop()
+                }
             }
-        }
-        .position(area.offset + area.dragOffset)
-        .frame(width: area.size.width, height: area.size.height, alignment: .center)
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        area.dragCorner(translation: value.translation, corner: .topRight)
+                    }
+            )
+            .position(area.cornerPos(corner: .topRight))
+            .frame(width: len, height: len)
+        
+        createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .bottomLeft)
+            .stroke(Color.accentColor, lineWidth: weight)
+            .onHover { hovering in
+                if hovering {
+                    NSCursor(
+                        image: NSImage(named: "resizesouthwest")!,
+                        hotSpot: NSPoint(x: 16, y: 16)).push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        area.dragCorner(translation: value.translation, corner: .bottomLeft)
+                    }
+            )
+            .position(area.cornerPos(corner: .bottomLeft))
+            .frame(width: len, height: len)
+        
+        createCornersPath(cornerRadius: cornerRadius, cornerLength: cornerLength, corner: .bottomRight)
+            .stroke(Color.accentColor, lineWidth: weight)
+            .onHover { hovering in
+                if hovering {
+                    NSCursor(
+                        image: NSImage(named: "resizesoutheast")!,
+                        hotSpot: NSPoint(x: 16, y: 16)).push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        area.dragCorner(translation: value.translation, corner: .bottomRight)
+                    }
+            )
+            .position(area.cornerPos(corner: .bottomRight))
+            .frame(width: len, height: len)
     }
     
     private func createCornersPath(
